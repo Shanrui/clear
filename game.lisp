@@ -123,6 +123,7 @@
   (setf i 0)
   (dolist (c col)
     (dolist (ce c)
+	  ;(format t "may error~%")
       (mat-set mat ce i 0)
       ;(setf (mat-elt list i ce) 0)
       ;(format t "i:~a ce:~a v:~a~%" i ce (mat-elt list i ce))
@@ -242,7 +243,18 @@
           (sdl-mixer:play-music music)
           (setf music-status (format nil "Music \"~A\": Playing..." 1))))))
 
-
+;is two image can exchange position ?
+(defun beside(pa pb)
+	   (let* ((ax (car pa))
+		  (ay (cadr pa))
+		  (bx (car pb))
+		  (by (cadr pb))
+		  (dx (- ax bx))
+		  (dy (- ay by)))
+	     (if (< (+ (* dx dx) (* dy dy)) 2)
+		 t
+		 nil)))
+	
 ;(defparameter array-status nil)
 (defun linker ()  
   (let ((sample nil)
@@ -370,7 +382,7 @@
 				    (setf swap-b-x (floor (/ (- x *begin-x*) 48)))
 				    (setf swap-b-y (floor (/ (- y *begin-y*) 48)))
 				    (format t "swapa:(~a,~a) (~a,~a)~%"  swap-a-x swap-a-y swap-b-x swap-b-y)
-				   (when (and (>= swap-a-x 0) (>= swap-a-y 0) (>= swap-b-x 0) (>= swap-b-y 0))
+				   (when (and (>= swap-a-x 0) (>= swap-a-y 0) (>= swap-b-x 0) (>= swap-b-y 0) (beside (list swap-a-x swap-a-y) (list swap-b-x swap-b-y) ))
 				     (setf swap-a-value  (mat-get array-status swap-a-y swap-a-x))
 				     (setf swap-b-value (mat-get array-status swap-b-y swap-b-x))
 				     (format t "va:~a vb:~a~%" swap-a-value swap-b-value)
