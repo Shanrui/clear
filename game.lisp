@@ -91,6 +91,13 @@
 	))
     (return-from clear-line result)))
 
+(defmacro mat-elt (mat row col)
+  `(nth ,col (nth ,row ,mat)))
+(defmacro mat-set (mat row col val)
+  `(setf (mat-elt ,mat ,row ,col) ,val))
+#+darwin (defun mat-set (mat row col val)
+  (setf (mat-elt mat row col) val))
+	
 (defun nth-col(list n)
   "获第n列"
   (let ((tmp nil))
@@ -134,12 +141,6 @@
   (dolist (x pos)
     (setf (nth x list) 0)))
 
-(defmacro mat-elt (mat row col)
-  `(nth ,col (nth ,row ,mat)))
-(defmacro mat-set (mat row col val)
-  `(setf (mat-elt ,mat ,row ,col) ,val))
-#+darwin (defun mat-set (mat row col val)
-  (setf (mat-elt mat row col) val))
 
 (defun mat-get (mat row col)
   (values (mat-elt mat row col))
@@ -242,8 +243,7 @@
         (progn
           (sdl-mixer:play-music music)
           (setf music-status (format nil "Music \"~A\": Playing..." 1))))))
-
-;is two image can exchange position ?
+;is it can exchange position
 (defun beside(pa pb)
 	   (let* ((ax (car pa))
 		  (ay (cadr pa))
